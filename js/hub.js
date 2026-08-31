@@ -3,6 +3,15 @@
   var hub = document.getElementById("hubScreen");
   var startBtn = document.getElementById("startBtn");
 
+  // Coming back from a game (play.html's "HUB" button) -> land straight on
+  // the game-selection grid instead of replaying the splash/start screen.
+  if (new URLSearchParams(window.location.search).get("skip") === "1") {
+    splash.classList.add("hidden");
+    hub.classList.add("active");
+    hub.style.animation = "none";
+    hub.style.opacity = "1";
+  }
+
   // ---------- audio (always on — no mute control by design) ----------
   var audioCtx = null;
 
