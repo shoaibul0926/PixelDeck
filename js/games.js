@@ -68,5 +68,13 @@ window.PIXELDECK_GAMES = [
     icon: "🔢",
     url: "https://shoaibul0926.github.io/Sudoku-game/",
     accent: "#b39cff"
+  },
+  {
+    slug: "brick-breaker",
+    title: "Brick Breaker",
+    desc: "Bounce, break, and chain combos through neon brick walls.",
+    icon: "🧱",
+    url: "https://shoaibul0926.github.io/brick-breaker-game/",
+    accent: "#b46bff"
   }
 ];
