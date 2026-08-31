@@ -34,7 +34,7 @@ window.PIXELDECK_GAMES = [
     title: "Mario-Style Platformer",
     desc: "Run, jump, and stomp your way through side-scrolling levels.",
     icon: "🍄",
-    url: "https://shoaibul0926.github.io/my-mario-game/",
+    url: "https://shoaibul0926.github.io/new-mario-game/",
     accent: "#ff3860"
   },
   {
