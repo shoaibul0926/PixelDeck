@@ -1,0 +1,208 @@
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap');
+
+:root {
+  --bg: #0b0c1a;
+  --bg-alt: #12142a;
+  --panel: #171933;
+  --text: #eef0ff;
+  --text-dim: #9a9dc4;
+  --neon-cyan: #00e5ff;
+  --neon-magenta: #ff2fd0;
+  --neon-yellow: #ffe94a;
+  --border: #2c2f57;
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'VT323', monospace;
+  font-size: 20px;
+}
+
+body {
+  background-image:
+    linear-gradient(180deg, rgba(0,229,255,0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,229,255,0.03) 1px, transparent 1px);
+  background-size: 100% 3px, 24px 24px;
+}
+
+.pixel-font {
+  font-family: 'Press Start 2P', monospace;
+}
+
+a { color: inherit; text-decoration: none; }
+
+/* ---------- Header ---------- */
+
+.site-header {
+  padding: 32px 20px 16px;
+  text-align: center;
+}
+
+.logo {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 32px;
+  letter-spacing: 2px;
+  margin: 0;
+  color: var(--neon-cyan);
+  text-shadow:
+    0 0 6px var(--neon-cyan),
+    0 0 18px rgba(0,229,255,0.6);
+}
+
+.logo span { color: var(--neon-magenta); text-shadow: 0 0 6px var(--neon-magenta), 0 0 18px rgba(255,47,208,0.6); }
+
+.tagline {
+  color: var(--text-dim);
+  font-size: 18px;
+  margin-top: 8px;
+  letter-spacing: 1px;
+}
+
+/* ---------- Game grid ---------- */
+
+.game-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 20px;
+  max-width: 1100px;
+  margin: 24px auto 60px;
+  padding: 0 20px;
+}
+
+.game-card {
+  background: var(--panel);
+  border: 3px solid var(--border);
+  border-radius: 4px;
+  padding: 18px;
+  cursor: pointer;
+  transition: transform 0.12s ease, border-color 0.12s ease, box-shadow 0.12s ease;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  position: relative;
+  outline-offset: 3px;
+}
+
+.game-card:hover,
+.game-card:focus-visible {
+  transform: translateY(-4px);
+  border-color: var(--card-accent, var(--neon-cyan));
+  box-shadow: 0 0 0 1px var(--card-accent, var(--neon-cyan)), 0 8px 24px rgba(0,0,0,0.5);
+}
+
+.game-card .icon {
+  width: 64px;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 34px;
+  background: var(--bg-alt);
+  border: 2px solid var(--card-accent, var(--border));
+  border-radius: 4px;
+}
+
+.game-card .icon img { width: 100%; height: 100%; object-fit: cover; image-rendering: pixelated; border-radius: 2px; }
+
+.game-card h2 {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 13px;
+  line-height: 1.5;
+  margin: 4px 0 0;
+  color: var(--text);
+}
+
+.game-card p {
+  color: var(--text-dim);
+  font-size: 17px;
+  margin: 0;
+  line-height: 1.3;
+}
+
+.game-card .play-hint {
+  margin-top: auto;
+  font-size: 14px;
+  letter-spacing: 1px;
+  color: var(--card-accent, var(--neon-yellow));
+  font-family: 'Press Start 2P', monospace;
+}
+
+/* ---------- Footer ---------- */
+
+.site-footer {
+  text-align: center;
+  color: var(--text-dim);
+  font-size: 15px;
+  padding: 20px;
+  border-top: 1px solid var(--border);
+}
+
+/* ---------- Play page ---------- */
+
+.play-bar {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 10px 16px;
+  background: var(--panel);
+  border-bottom: 3px solid var(--border);
+}
+
+.back-btn {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 12px;
+  color: var(--bg);
+  background: var(--neon-cyan);
+  border: none;
+  border-radius: 4px;
+  padding: 10px 14px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.back-btn:hover { background: var(--neon-yellow); }
+
+.play-title {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 13px;
+  color: var(--text);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.play-frame-wrap {
+  position: relative;
+  width: 100%;
+  height: calc(100vh - 58px);
+}
+
+.play-frame-wrap iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+  display: block;
+  background: #000;
+}
+
+.play-missing {
+  padding: 60px 20px;
+  text-align: center;
+  color: var(--text-dim);
+  font-size: 18px;
+}
+
+/* ---------- Responsive ---------- */
+
+@media (max-width: 480px) {
+  .logo { font-size: 22px; }
+  .game-card h2 { font-size: 12px; }
+  .play-title { font-size: 11px; }
+  .back-btn { font-size: 10px; padding: 8px 10px; }
+}
