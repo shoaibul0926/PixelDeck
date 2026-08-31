@@ -2,13 +2,9 @@
   var splash = document.getElementById("splashScreen");
   var hub = document.getElementById("hubScreen");
   var startBtn = document.getElementById("startBtn");
-  var muteBtn = document.getElementById("pdMuteBtn");
 
-  // ---------- audio ----------
+  // ---------- audio (always on — no mute control by design) ----------
   var audioCtx = null;
-  var muted = localStorage.getItem("pdMuted") === "1";
-  var bootPlayed = false;
-  if (muteBtn) muteBtn.textContent = muted ? "🔇" : "🔊";
 
   function ensureAudio() {
     if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
@@ -16,7 +12,6 @@
   }
 
   function beep(freq, duration, type, gainVal, glideTo, delay) {
-    if (muted) return;
     try {
       ensureAudio();
       var t0 = audioCtx.currentTime + (delay || 0);
@@ -34,35 +29,49 @@
     } catch (e) { /* audio unavailable, ignore */ }
   }
 
-  function sfxBoot() {
-    beep(330, 0.12, "square", 0.07, null, 0);
-    beep(440, 0.12, "square", 0.07, null, 0.11);
-    beep(660, 0.2, "square", 0.08, 880, 0.22);
-  }
   function sfxConfirm() { beep(320, 0.16, "square", 0.1, 920); }
   function sfxSelect() { beep(700, 0.09, "sine", 0.1, 1100); }
   function sfxHover() { beep(520, 0.035, "sine", 0.025); }
 
-  function unlockAndBoot() {
-    if (bootPlayed) return;
-    bootPlayed = true;
+  // ---------- continuous entry-screen loop ----------
+  // A short retro arpeggio that keeps repeating for as long as the splash
+  // screen is showing, instead of a single one-shot beep.
+  var LOOP_NOTES = [220, 277, 330, 277];
+  var loopTimer = null;
+  var loopStep = 0;
+
+  function playLoopStep() {
+    beep(LOOP_NOTES[loopStep % LOOP_NOTES.length], 0.22, "triangle", 0.05);
+    loopStep++;
+  }
+
+  function startEntryLoop() {
+    if (loopTimer) return;
     ensureAudio();
-    if (!splash.classList.contains("hidden")) sfxBoot();
+    playLoopStep();
+    loopTimer = setInterval(playLoopStep, 260);
+  }
+
+  function stopEntryLoop() {
+    if (loopTimer) {
+      clearInterval(loopTimer);
+      loopTimer = null;
+    }
+  }
+
+  var loopStarted = false;
+  function unlockAndStartLoop() {
+    if (loopStarted) return;
+    loopStarted = true;
+    if (!splash.classList.contains("hidden")) startEntryLoop();
   }
   ["pointerdown", "keydown", "touchstart"].forEach(function (evt) {
-    window.addEventListener(evt, unlockAndBoot, { once: true, passive: true });
+    window.addEventListener(evt, unlockAndStartLoop, { once: true, passive: true });
   });
-
-  if (muteBtn) {
-    muteBtn.addEventListener("click", function () {
-      muted = !muted;
-      localStorage.setItem("pdMuted", muted ? "1" : "0");
-      muteBtn.textContent = muted ? "🔇" : "🔊";
-    });
-  }
 
   // ---------- splash -> hub ----------
   function enterHub() {
+    stopEntryLoop();
     splash.classList.add("hidden");
     hub.classList.add("active");
   }
