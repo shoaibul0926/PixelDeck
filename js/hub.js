@@ -1,4 +1,21 @@
 (function () {
+  var splash = document.getElementById("splashScreen");
+  var hub = document.getElementById("hubScreen");
+  var startBtn = document.getElementById("startBtn");
+
+  function enterHub() {
+    splash.classList.add("hidden");
+    hub.classList.add("active");
+  }
+
+  startBtn.addEventListener("click", enterHub);
+  window.addEventListener("keydown", function (e) {
+    if (!splash.classList.contains("hidden") && (e.key === "Enter" || e.key === " ")) {
+      e.preventDefault();
+      enterHub();
+    }
+  });
+
   var grid = document.getElementById("game-grid");
   var games = window.PIXELDECK_GAMES || [];
 

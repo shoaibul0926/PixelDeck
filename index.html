@@ -8,18 +8,31 @@
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-  <header class="site-header">
-    <h1 class="logo">PIXEL<span>DECK</span></h1>
-    <p class="tagline">// select a game //</p>
-  </header>
 
-  <main>
-    <div class="game-grid" id="game-grid"></div>
-  </main>
+  <!-- ===================== SPLASH / START SCREEN ===================== -->
+  <div id="splashScreen" class="splash">
+    <div class="splash-scanline"></div>
+    <h1 class="logo splash-logo">PIXEL<span>DECK</span></h1>
+    <p class="tagline splash-tagline">// retro arcade game hub //</p>
+    <button id="startBtn" class="start-btn">▶ START</button>
+  </div>
 
-  <footer class="site-footer">
-    <p>PixelDeck — a hub for independently built &amp; deployed HTML5 games.</p>
-  </footer>
+  <!-- ===================== HUB / GAME SELECT SCREEN ===================== -->
+  <div id="hubScreen" class="hub-screen">
+    <header class="site-header">
+      <h1 class="logo">PIXEL<span>DECK</span></h1>
+      <p class="tagline">// select a game //</p>
+    </header>
+
+    <main>
+      <div class="game-grid" id="game-grid"></div>
+    </main>
+
+    <footer class="site-footer">
+      <p>PixelDeck — a hub for independently built &amp; deployed HTML5 games.</p>
+      <p class="credit">Made by <strong>SHOAIBUL HOQUE</strong></p>
+    </footer>
+  </div>
 
   <script src="js/games.js"></script>
   <script src="js/hub.js"></script>
