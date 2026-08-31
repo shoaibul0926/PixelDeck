@@ -104,7 +104,10 @@
   games.forEach(function (game) {
     var card = document.createElement("a");
     card.className = "game-card";
-    card.href = "play.html?g=" + encodeURIComponent(game.slug);
+    // Cache-bust this too: if a browser cached an old play.html for this
+    // game before a fix shipped, a stale unversioned URL would keep
+    // serving that old copy forever regardless of what's now on the server.
+    card.href = "play.html?g=" + encodeURIComponent(game.slug) + "&_=" + Date.now();
     card.style.setProperty("--card-accent", game.accent || "#00e5ff");
     card.setAttribute("aria-label", "Play " + game.title);
 
