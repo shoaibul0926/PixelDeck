@@ -10,6 +10,7 @@
     hub.classList.add("active");
     hub.style.animation = "none";
     hub.style.opacity = "1";
+    startHubMusic();
   }
 
   // ---------- audio (always on — no mute control by design) ----------
@@ -83,11 +84,34 @@
     window.addEventListener(evt, unlockAndStartLoop, { passive: true });
   });
 
+  // ---------- hub background music: warm welcoming loop ----------
+  // A calmer, warmer loop than the splash's chiptune arpeggio — plays for as
+  // long as the grid is showing (sound is permanent here too, by the same
+  // design as the entry loop: no mute control).
+  var HUB_MUSIC_NOTES = [392, 0, 494, 0, 587, 494, 0, 392, 440, 0, 392, 0, 330, 392, 0, 0];
+  var hubMusicTimer = null;
+  var hubMusicStep = 0;
+
+  function hubMusicStepFn() {
+    var note = HUB_MUSIC_NOTES[hubMusicStep % HUB_MUSIC_NOTES.length];
+    if (note > 0) beep(note, 0.55, "sine", 0.045, note * 1.01);
+    hubMusicStep++;
+  }
+
+  function startHubMusic() {
+    if (hubMusicTimer) return;
+    ensureAudio();
+    hubMusicStep = 0;
+    hubMusicStepFn();
+    hubMusicTimer = setInterval(hubMusicStepFn, 300);
+  }
+
   // ---------- splash -> hub ----------
   function enterHub() {
     stopEntryLoop();
     splash.classList.add("hidden");
     hub.classList.add("active");
+    startHubMusic();
   }
 
   startBtn.addEventListener("click", function () {
