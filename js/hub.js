@@ -129,22 +129,51 @@
     window.addEventListener(evt, unlockAndStartLoop, { passive: true });
   });
 
-  // ---------- hub background music: warm welcoming loop ----------
-  // A real two-part arrangement — a slow sustained bass (with a soft fifth
-  // on top for a fuller chord) under a brighter stepped melody — instead of
-  // a single monophonic tone repeating. No pitch-bend on any note here
-  // (that's what made the first version read as a "ding dong" doorbell chime
-  // rather than music). Plays for as long as the grid is showing (sound is
+  // ---------- hub background music: soothing ambient pad ----------
+  // Its own envelope (slow fade in, slow fade out — no sharp attack) instead
+  // of reusing the snappy pluck-decay beep() every UI click uses, since that
+  // shape reads as percussive no matter how the notes are chosen. Long,
+  // overlapping sine tones, a slow tempo, and sparse, spaced-out melody
+  // notes (mostly rests) keep it floating and calm instead of feeling like a
+  // song with a beat. Plays for as long as the grid is showing (sound is
   // permanent here too, by the same design as the entry loop: no mute
   // control).
+  function padTone(freq, duration, gainVal, delay) {
+    try {
+      ensureAudio();
+      var t0 = audioCtx.currentTime + (delay || 0);
+      var osc = audioCtx.createOscillator();
+      var gain = audioCtx.createGain();
+      osc.type = "sine";
+      osc.frequency.setValueAtTime(freq, t0);
+      var peak = gainVal || 0.05;
+      gain.gain.setValueAtTime(0.0001, t0);
+      gain.gain.exponentialRampToValueAtTime(peak, t0 + duration * 0.4);
+      gain.gain.exponentialRampToValueAtTime(0.0001, t0 + duration);
+      osc.connect(gain);
+      gain.connect(audioCtx.destination);
+      osc.start(t0);
+      osc.stop(t0 + duration);
+    } catch (e) { /* audio unavailable, ignore */ }
+  }
+
+  // 32 steps at a slow tempo; bass changes every 8 steps and each bass note
+  // sustains for the full 8-step span so the harmony never has a gap. The
+  // melody is sparse (mostly rests) with notes held well past the next step,
+  // so they overlap and blend instead of ticking along to a beat.
   var HUB_BASS_NOTES = [
-    196.00, 0, 0, 0, 246.94, 0, 0, 0,
-    220.00, 0, 0, 0, 196.00, 0, 0, 0
+    196.00, 0, 0, 0, 0, 0, 0, 0,
+    246.94, 0, 0, 0, 0, 0, 0, 0,
+    220.00, 0, 0, 0, 0, 0, 0, 0,
+    196.00, 0, 0, 0, 0, 0, 0, 0
   ];
   var HUB_MELODY_NOTES = [
-    392.00, 440.00, 493.88, 440.00, 523.25, 493.88, 440.00, 392.00,
-    349.23, 392.00, 440.00, 493.88, 440.00, 392.00, 349.23, 0
+    0, 0, 587.33, 0, 0, 0, 523.25, 0,
+    0, 0, 0, 493.88, 0, 0, 0, 0,
+    0, 0, 523.25, 0, 0, 0, 440.00, 0,
+    0, 0, 0, 392.00, 0, 0, 0, 0
   ];
+  var HUB_STEP_MS = 650;
   var hubMusicTimer = null;
   var hubMusicStep = 0;
 
@@ -152,11 +181,12 @@
     var i = hubMusicStep % HUB_MELODY_NOTES.length;
     var bass = HUB_BASS_NOTES[i];
     var mel = HUB_MELODY_NOTES[i];
+    var stepSec = HUB_STEP_MS / 1000;
     if (bass > 0) {
-      beep(bass, 1.1, "triangle", 0.05);
-      beep(bass * 1.5, 1.1, "sine", 0.025);
+      padTone(bass, stepSec * 8, 0.04);
+      padTone(bass * 1.5, stepSec * 8, 0.016);
     }
-    if (mel > 0) beep(mel, 0.34, "sine", 0.05);
+    if (mel > 0) padTone(mel, stepSec * 3.2, 0.03);
     hubMusicStep++;
   }
 
@@ -165,7 +195,7 @@
     ensureAudio();
     hubMusicStep = 0;
     hubMusicStepFn();
-    hubMusicTimer = setInterval(hubMusicStepFn, 300);
+    hubMusicTimer = setInterval(hubMusicStepFn, HUB_STEP_MS);
   }
 
   // ---------- splash -> hub ----------
