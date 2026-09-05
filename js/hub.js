@@ -3,6 +3,11 @@
   var hub = document.getElementById("hubScreen");
   var startBtn = document.getElementById("startBtn");
 
+  // The CRT power-on flash only needs to play once on load — remove it once
+  // its animation finishes so it isn't just sitting there in the DOM.
+  var crtFlash = document.getElementById("crtFlash");
+  if (crtFlash) setTimeout(function () { crtFlash.remove(); }, 800);
+
   // Coming back from a game (play.html's "HUB" button) -> land straight on
   // the game-selection grid instead of replaying the splash/start screen.
   if (new URLSearchParams(window.location.search).get("skip") === "1") {
@@ -39,6 +44,11 @@
         vr: (Math.random() - 0.5) * 0.35,
         scale: 0.7 + Math.random() * 0.9
       });
+      // Staggered fade-in instead of every icon popping in at once — the
+      // field visibly populates over the first ~1.3s the page is up.
+      (function (el, delay) {
+        setTimeout(function () { el.classList.add("in"); }, delay);
+      })(el, i * 40 + Math.random() * 60);
     }
 
     function stepIcons() {
