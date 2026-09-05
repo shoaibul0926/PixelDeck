@@ -13,6 +13,51 @@
     startHubMusic();
   }
 
+  // ---------- floating background icons on the splash screen ----------
+  // A field of the actual game icons drifting around behind the logo — a
+  // little preview of what's inside, instead of a static empty background.
+  (function () {
+    var field = document.getElementById("splashIconField");
+    if (!field) return;
+    var pool = (window.PIXELDECK_GAMES || []).map(function (g) { return g.icon; }).filter(Boolean);
+    if (pool.length === 0) pool = ["🎮", "🕹️", "👾"];
+
+    var count = Math.min(16, Math.max(10, pool.length));
+    var particles = [];
+    for (var i = 0; i < count; i++) {
+      var el = document.createElement("span");
+      el.className = "floating-icon";
+      el.textContent = pool[i % pool.length];
+      field.appendChild(el);
+      particles.push({
+        el: el,
+        x: Math.random() * 100,
+        y: Math.random() * 100,
+        vx: (Math.random() - 0.5) * 0.045,
+        vy: (Math.random() - 0.5) * 0.045,
+        rot: Math.random() * 360,
+        vr: (Math.random() - 0.5) * 0.35,
+        scale: 0.7 + Math.random() * 0.9
+      });
+    }
+
+    function stepIcons() {
+      for (var j = 0; j < particles.length; j++) {
+        var p = particles[j];
+        p.x += p.vx;
+        p.y += p.vy;
+        p.rot += p.vr;
+        if (p.x < -8) p.x = 108; else if (p.x > 108) p.x = -8;
+        if (p.y < -8) p.y = 108; else if (p.y > 108) p.y = -8;
+        p.el.style.transform =
+          "translate(-50%, -50%) translate(" + p.x + "vw, " + p.y + "vh) " +
+          "rotate(" + p.rot + "deg) scale(" + p.scale + ")";
+      }
+      if (!splash.classList.contains("hidden")) requestAnimationFrame(stepIcons);
+    }
+    stepIcons();
+  })();
+
   // ---------- audio (always on — no mute control by design) ----------
   var audioCtx = null;
 

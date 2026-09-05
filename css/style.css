@@ -54,6 +54,24 @@ a { color: inherit; text-decoration: none; }
 }
 #splashScreen.hidden { display: none; }
 
+.splash-icon-field {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: -1;
+}
+
+.floating-icon {
+  position: absolute;
+  top: 0;
+  left: 0;
+  font-size: 32px;
+  opacity: 0.22;
+  filter: drop-shadow(0 0 6px rgba(0,229,255,0.3));
+  will-change: transform;
+}
+
 .splash-scanline {
   position: absolute;
   left: 0;
