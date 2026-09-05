@@ -12,6 +12,21 @@
 </head>
 <body>
 
+  <!-- ===================== LOGIN / SIGN UP GATE ===================== -->
+  <div id="loginScreen" class="login-screen">
+    <div class="login-box">
+      <h1 class="logo login-logo">PIXEL<span>DECK</span></h1>
+      <p class="tagline login-tagline" id="authFormTitle">LOG IN</p>
+      <input type="text" id="authUsername" class="login-input" placeholder="Username" maxlength="20" autocomplete="username">
+      <input type="password" id="authPassword" class="login-input" placeholder="Password" maxlength="60" autocomplete="current-password">
+      <p class="login-error" id="authError"></p>
+      <button id="authSubmitBtn" class="start-btn login-submit">▶ LOG IN</button>
+      <a href="#" id="authSwitchLink" class="login-switch">New here? Create an account</a>
+    </div>
+  </div>
+
+  <div id="welcomeBackToast" class="welcome-toast"></div>
+
   <!-- ===================== SPLASH / START SCREEN ===================== -->
   <div id="splashScreen" class="splash">
     <div class="splash-scanline"></div>
@@ -25,6 +40,10 @@
     <header class="site-header">
       <h1 class="logo">PIXEL<span>DECK</span></h1>
       <p class="tagline">// select a game //</p>
+      <div id="userBadge" class="user-badge">
+        <span>👤 <span id="userBadgeName">Player</span></span>
+        <button id="logoutBtn" class="logout-btn">Log Out</button>
+      </div>
     </header>
 
     <main>
@@ -37,7 +56,8 @@
     </footer>
   </div>
 
+  <script src="js/auth.js?v=1"></script>
   <script src="js/games.js?v=5"></script>
-  <script src="js/hub.js?v=3"></script>
+  <script src="js/hub.js?v=4"></script>
 </body>
 </html>
