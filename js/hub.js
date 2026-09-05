@@ -85,16 +85,33 @@
   });
 
   // ---------- hub background music: warm welcoming loop ----------
-  // A calmer, warmer loop than the splash's chiptune arpeggio — plays for as
-  // long as the grid is showing (sound is permanent here too, by the same
-  // design as the entry loop: no mute control).
-  var HUB_MUSIC_NOTES = [392, 0, 494, 0, 587, 494, 0, 392, 440, 0, 392, 0, 330, 392, 0, 0];
+  // A real two-part arrangement — a slow sustained bass (with a soft fifth
+  // on top for a fuller chord) under a brighter stepped melody — instead of
+  // a single monophonic tone repeating. No pitch-bend on any note here
+  // (that's what made the first version read as a "ding dong" doorbell chime
+  // rather than music). Plays for as long as the grid is showing (sound is
+  // permanent here too, by the same design as the entry loop: no mute
+  // control).
+  var HUB_BASS_NOTES = [
+    196.00, 0, 0, 0, 246.94, 0, 0, 0,
+    220.00, 0, 0, 0, 196.00, 0, 0, 0
+  ];
+  var HUB_MELODY_NOTES = [
+    392.00, 440.00, 493.88, 440.00, 523.25, 493.88, 440.00, 392.00,
+    349.23, 392.00, 440.00, 493.88, 440.00, 392.00, 349.23, 0
+  ];
   var hubMusicTimer = null;
   var hubMusicStep = 0;
 
   function hubMusicStepFn() {
-    var note = HUB_MUSIC_NOTES[hubMusicStep % HUB_MUSIC_NOTES.length];
-    if (note > 0) beep(note, 0.55, "sine", 0.045, note * 1.01);
+    var i = hubMusicStep % HUB_MELODY_NOTES.length;
+    var bass = HUB_BASS_NOTES[i];
+    var mel = HUB_MELODY_NOTES[i];
+    if (bass > 0) {
+      beep(bass, 1.1, "triangle", 0.05);
+      beep(bass * 1.5, 1.1, "sine", 0.025);
+    }
+    if (mel > 0) beep(mel, 0.34, "sine", 0.05);
     hubMusicStep++;
   }
 
