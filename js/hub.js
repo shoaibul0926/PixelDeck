@@ -22,7 +22,7 @@
     var pool = (window.PIXELDECK_GAMES || []).map(function (g) { return g.icon; }).filter(Boolean);
     if (pool.length === 0) pool = ["🎮", "🕹️", "👾"];
 
-    var count = Math.min(16, Math.max(10, pool.length));
+    var count = 32;
     var particles = [];
     for (var i = 0; i < count; i++) {
       var el = document.createElement("span");
