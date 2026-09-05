@@ -89,14 +89,26 @@
   function sfxHover() { beep(520, 0.035, "sine", 0.025); }
 
   // ---------- continuous entry-screen loop ----------
-  // A short retro arpeggio that keeps repeating for as long as the splash
-  // screen is showing, instead of a single one-shot beep.
-  var LOOP_NOTES = [220, 277, 330, 277];
+  // A real two-part arcade "attract mode" tune — a driving bassline under a
+  // 16-step melody — instead of a bare 4-note arpeggio repeating. Keeps the
+  // plucky chiptune character (this is the energetic boot-up screen, not the
+  // calm hub) but reads as an actual tune rather than one thin loop.
+  var LOOP_BASS = [
+    110, 0, 110, 0, 130.81, 0, 110, 0,
+    146.83, 0, 130.81, 0, 110, 0, 98, 0
+  ];
+  var LOOP_MELODY = [
+    220, 277, 330, 277, 220, 277, 330, 392,
+    330, 277, 220, 196, 220, 277, 330, 277
+  ];
   var loopTimer = null;
   var loopStep = 0;
 
   function playLoopStep() {
-    beep(LOOP_NOTES[loopStep % LOOP_NOTES.length], 0.22, "triangle", 0.05);
+    var i = loopStep % LOOP_MELODY.length;
+    var bass = LOOP_BASS[i];
+    if (bass > 0) beep(bass, 0.24, "triangle", 0.06);
+    beep(LOOP_MELODY[i], 0.22, "square", 0.045);
     loopStep++;
   }
 
