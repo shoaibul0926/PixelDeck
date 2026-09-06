@@ -8,16 +8,6 @@
   var crtFlash = document.getElementById("crtFlash");
   if (crtFlash) setTimeout(function () { crtFlash.remove(); }, 800);
 
-  // Coming back from a game (play.html's "HUB" button) -> land straight on
-  // the game-selection grid instead of replaying the splash/start screen.
-  if (new URLSearchParams(window.location.search).get("skip") === "1") {
-    splash.classList.add("hidden");
-    hub.classList.add("active");
-    hub.style.animation = "none";
-    hub.style.opacity = "1";
-    startHubMusic();
-  }
-
   // ---------- floating background icons on the splash screen ----------
   // A field of the actual game icons drifting around behind the logo — a
   // little preview of what's inside, instead of a static empty background.
@@ -218,6 +208,20 @@
     hubMusicStep = 0;
     hubMusicStepFn();
     hubMusicTimer = setInterval(hubMusicStepFn, HUB_STEP_MS);
+  }
+
+  // Coming back from a game (play.html's "HUB" button) -> land straight on
+  // the game-selection grid instead of replaying the splash/start screen.
+  // Must run after startHubMusic (and the HUB_*_NOTES data above it) are
+  // defined: calling it any earlier throws (reading .length of an
+  // as-yet-unassigned var), which used to abort this whole script before it
+  // reached the game-grid-building code further down, leaving the grid empty.
+  if (new URLSearchParams(window.location.search).get("skip") === "1") {
+    splash.classList.add("hidden");
+    hub.classList.add("active");
+    hub.style.animation = "none";
+    hub.style.opacity = "1";
+    startHubMusic();
   }
 
   // ---------- splash -> hub ----------
