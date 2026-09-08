@@ -8,16 +8,16 @@
   var crtFlash = document.getElementById("crtFlash");
   if (crtFlash) setTimeout(function () { crtFlash.remove(); }, 800);
 
-  // ---------- floating background icons on the splash screen ----------
-  // A field of the actual game icons drifting around behind the logo — a
+  // ---------- floating background icons (splash screen + hub grid) ----------
+  // A field of the actual game icons drifting around behind the content — a
   // little preview of what's inside, instead of a static empty background.
-  (function () {
-    var field = document.getElementById("splashIconField");
+  // Shared by the splash logo and the hub's game grid so both screens get
+  // the same living-background treatment.
+  function startIconField(field, count, isVisible) {
     if (!field) return;
     var pool = (window.PIXELDECK_GAMES || []).map(function (g) { return g.icon; }).filter(Boolean);
     if (pool.length === 0) pool = ["🎮", "🕹️", "👾"];
 
-    var count = 32;
     var particles = [];
     for (var i = 0; i < count; i++) {
       var el = document.createElement("span");
@@ -53,10 +53,20 @@
           "translate(-50%, -50%) translate(" + p.x + "vw, " + p.y + "vh) " +
           "rotate(" + p.rot + "deg) scale(" + p.scale + ")";
       }
-      if (!splash.classList.contains("hidden")) requestAnimationFrame(stepIcons);
+      // No isVisible callback means "keep going for the life of the page"
+      // (used for the hub field, which is inactive at first paint and only
+      // flips to active later via enterHub()/the skip=1 redirect — gating on
+      // its current state here would let the very first check catch it
+      // still inactive and kill the loop before it ever gets a chance).
+      if (!isVisible || isVisible()) requestAnimationFrame(stepIcons);
     }
     stepIcons();
-  })();
+  }
+
+  startIconField(document.getElementById("splashIconField"), 32, function () {
+    return !splash.classList.contains("hidden");
+  });
+  startIconField(document.getElementById("hubIconField"), 24);
 
   // ---------- audio (always on — no mute control by design) ----------
   var audioCtx = null;

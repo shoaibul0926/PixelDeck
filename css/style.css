@@ -92,6 +92,21 @@ a { color: inherit; text-decoration: none; }
 }
 .floating-icon.in { opacity: 0.22; }
 
+/* ---------- Floating background icons on the hub/grid screen ---------- */
+/* Same drifting-icon effect as the splash screen, pinned behind the game
+   grid so it stays visible while the page scrolls, dimmed further so it
+   never competes with the cards for attention. */
+.hub-icon-field {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 0;
+}
+.hub-icon-field .floating-icon.in { opacity: 0.12; }
+
+.site-header, .game-grid, .site-footer { position: relative; z-index: 1; }
+
 .splash-scanline {
   position: absolute;
   left: 0;
