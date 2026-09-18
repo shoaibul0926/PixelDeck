@@ -10,6 +10,7 @@ const include = ["index.html", "play.html", "css", "js", "assets"];
 fs.rmSync(out, { recursive: true, force: true });
 fs.mkdirSync(out, { recursive: true });
 for (const name of include) {
+  if (!fs.existsSync(path.join(root, name))) continue; // e.g. empty assets/ is not tracked by git
   fs.cpSync(path.join(root, name), path.join(out, name), { recursive: true });
 }
 console.log("www/ ready:", include.join(", "));
