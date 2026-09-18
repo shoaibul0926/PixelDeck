@@ -1,0 +1,17 @@
+{
+  "name": "pixeldeck",
+  "version": "1.0.0",
+  "private": true,
+  "description": "PixelDeck retro arcade hub, packaged as an Android app with Capacitor.",
+  "scripts": {
+    "build:web": "node scripts/build-www.js",
+    "android:sync": "npm run build:web && npx cap sync android"
+  },
+  "dependencies": {
+    "@capacitor/android": "^8.5.2",
+    "@capacitor/core": "^8.5.2"
+  },
+  "devDependencies": {
+    "@capacitor/cli": "^8.5.2"
+  }
+}

@@ -136,11 +136,8 @@
     }
   }
 
-  // Not { once: true } on purpose: while the login gate is up, the splash is
-  // kept hidden, so the *first* interaction (e.g. clicking the login form)
-  // must not consume this listener before the splash ever gets a chance to
-  // play its boot loop. It keeps checking on every interaction until the
-  // splash is actually visible, then latches via loopStarted.
+  // Not { once: true } on purpose: the listener keeps checking on every
+  // interaction until the splash is visible, then latches via loopStarted.
   var loopStarted = false;
   function unlockAndStartLoop() {
     if (loopStarted || splash.classList.contains("hidden")) return;

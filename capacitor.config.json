@@ -1,0 +1,9 @@
+{
+  "appId": "com.shoaibul.pixeldeck",
+  "appName": "PixelDeck",
+  "webDir": "www",
+  "backgroundColor": "#0b0c1a",
+  "android": {
+    "backgroundColor": "#0b0c1a"
+  }
+}
